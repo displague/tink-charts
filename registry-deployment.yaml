@@ -1,0 +1,61 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: registry
+  name: registry
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: registry
+    spec:
+      containers:
+      - env:
+        - name: REGISTRY_AUTH
+          value: htpasswd
+        - name: REGISTRY_AUTH_HTPASSWD_PATH
+          value: /auth/htpasswd
+        - name: REGISTRY_AUTH_HTPASSWD_REALM
+          value: Registry Realm
+        - name: REGISTRY_HTTP_ADDR
+          value: 0.0.0.0:443
+        - name: REGISTRY_HTTP_TLS_CERTIFICATE
+          value: /certs/server.pem
+        - name: REGISTRY_HTTP_TLS_KEY
+          value: /certs/server-key.pem
+        image: registry
+        livenessProbe:
+          exec:
+            command:
+            - curl --cacert /certs/ca.pem https://127.0.0.1
+          failureThreshold: 5
+          periodSeconds: 5
+          timeoutSeconds: 1
+        name: registry
+        resources: {}
+        volumeMounts:
+        - mountPath: /certs
+          name: registry-claim0
+        - mountPath: /var/lib/registry
+          name: registry-claim1
+      restartPolicy: Always
+      volumes:
+      - name: registry-claim0
+        persistentVolumeClaim:
+          claimName: registry-claim0
+      - name: registry-claim1
+        persistentVolumeClaim:
+          claimName: registry-claim1
+status: {}

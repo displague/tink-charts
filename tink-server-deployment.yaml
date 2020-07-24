@@ -1,0 +1,75 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: tink-server
+  name: tink-server
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: tink-server
+    spec:
+      containers:
+      - env:
+        - name: FACILITY
+          value: onprem
+        - name: PACKET_ENV
+          value: testing
+        - name: PACKET_VERSION
+          value: ignored
+        - name: PGDATABASE
+          value: tinkerbell
+        - name: PGHOST
+          value: db
+        - name: PGPASSWORD
+          value: tinkerbell
+        - name: PGPORT
+          value: "5432"
+        - name: PGSSLMODE
+          value: disable
+        - name: PGUSER
+          value: tinkerbell
+        - name: ROLLBAR_DISABLE
+          value: "1"
+        - name: ROLLBAR_TOKEN
+          value: ignored
+        - name: TINKERBELL_GRPC_AUTHORITY
+          value: :42113
+        - name: TINKERBELL_HTTP_AUTHORITY
+          value: :42114
+        - name: TINK_AUTH_PASSWORD
+        - name: TINK_AUTH_USERNAME
+        image: quay.io/tinkerbell/tink:latest
+        livenessProbe:
+          exec:
+            command:
+            - wget -qO- 127.0.0.1:42114/cert
+          failureThreshold: 30
+          periodSeconds: 5
+          timeoutSeconds: 2
+        name: tink-server
+        ports:
+        - containerPort: 42113
+        - containerPort: 42114
+        resources: {}
+        volumeMounts:
+        - mountPath: /certs/onprem
+          name: tink-server-claim0
+      restartPolicy: Always
+      volumes:
+      - name: tink-server-claim0
+        persistentVolumeClaim:
+          claimName: tink-server-claim0
+status: {}

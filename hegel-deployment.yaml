@@ -1,0 +1,49 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: hegel
+  name: hegel
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: hegel
+    spec:
+      containers:
+      - env:
+        - name: DATA_MODEL_VERSION
+          value: "1"
+        - name: GRPC_PORT
+          value: "42115"
+        - name: HEGEL_FACILITY
+          value: onprem
+        - name: HEGEL_USE_TLS
+          value: "0"
+        - name: PACKET_ENV
+          value: testing
+        - name: PACKET_VERSION
+          value: ignored
+        - name: ROLLBAR_DISABLE
+          value: "1"
+        - name: ROLLBAR_TOKEN
+          value: ignored
+        - name: TINKERBELL_CERT_URL
+          value: http://127.0.0.1:42114/cert
+        - name: TINKERBELL_GRPC_AUTHORITY
+          value: 127.0.0.1:42113
+        image: quay.io/tinkerbell/hegel:latest
+        name: hegel
+        resources: {}
+      restartPolicy: Always
+status: {}

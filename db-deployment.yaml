@@ -1,0 +1,59 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: db
+  name: db
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: db
+    spec:
+      containers:
+      - env:
+        - name: POSTGRES_DB
+          value: tinkerbell
+        - name: POSTGRES_PASSWORD
+          value: tinkerbell
+        - name: POSTGRES_USER
+          value: tinkerbell
+        image: postgres:10-alpine
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready -U tinkerbell
+          failureThreshold: 30
+          periodSeconds: 1
+          timeoutSeconds: 1
+        name: db
+        ports:
+        - containerPort: 5432
+        resources: {}
+        volumeMounts:
+        - mountPath: /docker-entrypoint-initdb.d/tinkerbell-init.sql
+          name: db-claim0
+          readOnly: true
+        - mountPath: /var/lib/postgresql/data
+          name: postgres-data
+      restartPolicy: Always
+      volumes:
+      - name: db-claim0
+        persistentVolumeClaim:
+          claimName: db-claim0
+          readOnly: true
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: postgres-data
+status: {}

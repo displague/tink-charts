@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: boots
+  name: boots
+spec:
+  ports:
+  - name: "80"
+    port: 80
+    targetPort: 80
+  - name: "67"
+    port: 67
+    protocol: UDP
+    targetPort: 67
+  - name: "69"
+    port: 69
+    protocol: UDP
+    targetPort: 69
+  selector:
+    io.kompose.service: boots
+status:
+  loadBalancer: {}

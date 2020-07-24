@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: tink-cli
+  name: tink-cli
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: tink-cli
+    spec:
+      containers:
+      - env:
+        - name: TINKERBELL_CERT_URL
+          value: http://127.0.0.1:42114/cert
+        - name: TINKERBELL_GRPC_AUTHORITY
+          value: 127.0.0.1:42113
+        image: quay.io/tinkerbell/tink-cli:latest
+        name: tink-cli
+        resources: {}
+      restartPolicy: Always
+status: {}
