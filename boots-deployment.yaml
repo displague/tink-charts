@@ -66,7 +66,7 @@ spec:
         - name: TFTP_BIND
           value: :69
         - name: TINKERBELL_CERT_URL
-          value: http://:42114/cert
+          value: http://tink-server:42114/cert
         - name: TINKERBELL_GRPC_AUTHORITY
           value: :42113
         image: quay.io/tinkerbell/boots:latest

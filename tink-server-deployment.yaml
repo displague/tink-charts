@@ -53,16 +53,18 @@ spec:
         - name: TINK_AUTH_USERNAME
         image: quay.io/tinkerbell/tink:latest
         livenessProbe:
-          exec:
-            command:
-            - wget -qO- 127.0.0.1:42114/cert
+          httpGet:
+            path: /cert
+            port: http-authority
           failureThreshold: 30
           periodSeconds: 5
           timeoutSeconds: 2
         name: tink-server
         ports:
-        - containerPort: 42113
-        - containerPort: 42114
+        - name: "grpc-authority"
+          containerPort: 42113
+        - name: "http-authority"
+          containerPort: 42114
         resources: {}
         volumeMounts:
         - mountPath: /certs/onprem

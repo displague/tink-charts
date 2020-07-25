@@ -10,12 +10,12 @@ metadata:
   name: tink-server
 spec:
   ports:
-  - name: "42113"
+  - name: "grpc-authority"
     port: 42113
-    targetPort: 42113
-  - name: "42114"
+    targetPort: "grpc-authority"
+  - name: "http-authority"
     port: 42114
-    targetPort: 42114
+    targetPort: "http-authority"
   selector:
     io.kompose.service: tink-server
 status:
