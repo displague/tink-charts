@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
@@ -9,7 +9,12 @@ metadata:
     io.kompose.service: tink-server
   name: tink-server
 spec:
+  progressDeadlineSeconds: 2147483647
   replicas: 1
+  revisionHistoryLimit: 2147483647
+  selector:
+    matchLabels:
+      io.kompose.service: tink-server
   strategy:
     type: Recreate
   template:
@@ -52,24 +57,35 @@ spec:
         - name: TINK_AUTH_PASSWORD
         - name: TINK_AUTH_USERNAME
         image: quay.io/tinkerbell/tink:latest
+        imagePullPolicy: Always
         livenessProbe:
+          failureThreshold: 30
           httpGet:
             path: /cert
             port: http-authority
-          failureThreshold: 30
+            scheme: HTTP
           periodSeconds: 5
+          successThreshold: 1
           timeoutSeconds: 2
         name: tink-server
         ports:
-        - name: "grpc-authority"
-          containerPort: 42113
-        - name: "http-authority"
-          containerPort: 42114
+        - containerPort: 42113
+          name: grpc-authority
+          protocol: TCP
+        - containerPort: 42114
+          name: http-authority
+          protocol: TCP
         resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
         volumeMounts:
         - mountPath: /certs/onprem
           name: tink-server-claim0
+      dnsPolicy: ClusterFirst
       restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
       volumes:
       - name: tink-server-claim0
         persistentVolumeClaim:
