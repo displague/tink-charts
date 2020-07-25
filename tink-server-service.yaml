@@ -6,7 +6,7 @@ metadata:
     kompose.version: 1.19.0 (f63a961c)
   creationTimestamp: null
   labels:
-    io.kompose.service: tink-server
+    app: tink-server
   name: tink-server
 spec:
   ports:
@@ -17,6 +17,6 @@ spec:
     port: 42114
     targetPort: "http-authority"
   selector:
-    io.kompose.service: tink-server
+    app: tink-server
 status:
   loadBalancer: {}

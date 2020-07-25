@@ -6,7 +6,7 @@ metadata:
     kompose.version: 1.19.0 (f63a961c)
   creationTimestamp: null
   labels:
-    io.kompose.service: db
+    app: db
   name: db
 spec:
   progressDeadlineSeconds: 2147483647
@@ -14,7 +14,7 @@ spec:
   revisionHistoryLimit: 2147483647
   selector:
     matchLabels:
-      io.kompose.service: db
+      app: db
   strategy:
     type: Recreate
   template:
@@ -24,7 +24,7 @@ spec:
         kompose.version: 1.19.0 (f63a961c)
       creationTimestamp: null
       labels:
-        io.kompose.service: db
+        app: db
     spec:
       containers:
       - env:

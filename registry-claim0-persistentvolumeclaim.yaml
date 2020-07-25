@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: registry-claim0
+    app: registry-claim0
   name: registry-claim0
 spec:
   accessModes:

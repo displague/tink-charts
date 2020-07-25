@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: nginx-claim0
+    app: nginx-claim0
   name: nginx-claim0
 spec:
   accessModes:

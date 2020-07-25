@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: tink-server-claim0
+    app: tink-server-claim0
   name: tink-server-claim0
 spec:
   accessModes:

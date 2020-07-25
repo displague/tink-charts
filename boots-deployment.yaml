@@ -6,7 +6,7 @@ metadata:
     kompose.version: 1.19.0 (f63a961c)
   creationTimestamp: null
   labels:
-    io.kompose.service: boots
+    app: boots
   name: boots
 spec:
   progressDeadlineSeconds: 2147483647
@@ -14,7 +14,7 @@ spec:
   revisionHistoryLimit: 2147483647
   selector:
     matchLabels:
-      io.kompose.service: boots
+      app: boots
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -27,7 +27,7 @@ spec:
         kompose.version: 1.19.0 (f63a961c)
       creationTimestamp: null
       labels:
-        io.kompose.service: boots
+        app: boots
     spec:
       containers:
       - args:
